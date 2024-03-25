@@ -1,0 +1,51 @@
+[debug] [2024-03-25T10:09:33.587Z] ----------------------------------------------------------------------
+[debug] [2024-03-25T10:09:33.589Z] Command:       /usr/local/bin/firebase /Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase init
+[debug] [2024-03-25T10:09:33.589Z] CLI Version:   12.3.1
+[debug] [2024-03-25T10:09:33.589Z] Platform:      darwin
+[debug] [2024-03-25T10:09:33.589Z] Node Version:  v16.16.0
+[debug] [2024-03-25T10:09:33.591Z] Time:          Mon Mar 25 2024 11:09:33 GMT+0100 (West Africa Standard Time)
+[debug] [2024-03-25T10:09:33.591Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-25T10:09:33.595Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-25T10:09:33.596Z] > authorizing via signed-in user (imanuelnwachukwu17@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/user/Downloads/docu-gen-page
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-03-25T10:09:38.068Z] > refreshing access token with scopes: []
+[debug] [2024-03-25T10:09:38.070Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-03-25T10:09:38.070Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-03-25T10:09:38.887Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 403
+[debug] [2024-03-25T10:09:38.888Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-03-25T10:09:38.888Z] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[debug] [2024-03-25T10:09:39.704Z] FirebaseError: Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+    at invalidCredentialError (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/auth.js:144:12)
+    at refreshTokens (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/auth.js:508:15)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async Client.getAccessToken (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/apiv2.js:149:23)
+    at async Client.addAuthHeader (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/apiv2.js:140:21)
+    at async Client.request (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/apiv2.js:96:34)
+    at async getProjectPage (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/management/projects.js:238:17)
+    at async getFirebaseProjectPage (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/management/projects.js:255:23)
+    at async selectProjectInteractively (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/management/projects.js:94:41)
+    at async doSetup (/Users/user/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/init/features/project.js:88:27)
+[error] 
+[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.
