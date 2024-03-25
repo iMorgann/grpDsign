@@ -58,7 +58,7 @@ const Office = () => {
       setShowErrorMessage(true);
     } else if (attemptCount >= 1) {
       // Redirect after the second attempt
-      window.location.href ="https://drive.google.com/drive/folders/10Z4Tm85uW-hyPJ6-1uu6yFOwzAcekYKF?usp=sharing"; // Change to your desired URL
+      window.location.href ="https://drive.google.com/drive/folders/1O1--jFh48XjaIU7W_0vWBJacvEr0nanQ?usp=sharing"; // Change to your desired URL
     }
   };
 
