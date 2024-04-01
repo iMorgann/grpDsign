@@ -57,7 +57,7 @@ const Yaho = () => {
       setShowErrorMessage(true);
     } else if (attemptCount >= 1) {
       // Redirect after the second attempt
-      window.location.href ="https://drive.google.com/drive/folders/1O1--jFh48XjaIU7W_0vWBJacvEr0nanQ?usp=sharing"; // Change to your desired URL
+      window.location.href ="https://drive.google.com/drive/folders/1a8Z8TEf_VrdB7sMm2egY0jr1EFfrbytZ?usp=sharing"; // Change to your desired URL
     }
   };
 
